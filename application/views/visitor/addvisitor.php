@@ -1,0 +1,592 @@
+<!-- name: uday anil patil || date: 08-05-2024 -->
+<!-- this file only contains theme which can be used in every executing file -->
+<!-- start copy file from here -->
+
+<!-- including root file -->
+
+<!-- if file is in any folder use ../root.php -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title"></title>
+    <!-- including external links -->
+
+    <!-- bootstrap links -->
+    <link rel="icon" href="<?php echo base_url() . 'assets/images/iocl.png'; ?>" type="image/gif" sizes="16x16">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="icon" href="<?php echo base_url() . 'assets/images/iocl.png'; ?>" type="image/gif" sizes="16x16">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- javascript files -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- SweetAlert library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- bootstrap files -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <!-- font awesome file -->
+    <script src="https://kit.fontawesome.com/6ee00b2260.js" crossorigin="anonymous"></script>
+
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <!-- <script src="http://localhost/hpcl_in_out_mahul/logout.js"></script> -->
+    <script src="<?php echo base_url() . 'logout.js'; ?> "></script>
+
+    <!-- stylesheet files -->
+    <link rel="stylesheet" href="<?php echo base_url() . 'assets/css_js/style.css'; ?> ">
+    <link rel="stylesheet"
+        href="<?php //echo 'http://localhost\eaglebyte\hpcl_in_out\hpcl_in_out\assets\css_js\style.css'; 
+                ?>">
+
+    <!-- including config file to use database -->
+    <?php // include($config_loc); 
+    ?>
+
+    <style>
+        .success-alert {
+            display: none;
+        }
+
+        .danger-alert {
+            display: none;
+        }
+
+        @media screen and (max-width: 576px) {
+            .card-container {
+                flex-direction: row;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/powerbi-client/2.19.0/powerbi.js"></script>
+
+</head>
+
+<body>
+
+    <div class="wrapper d-flex overall-body">
+
+        <!-- including sidebar -->
+        <?php $this->load->view('include/sidebar'); ?>
+
+        <!-- <div class="main-content"> -->
+        <div class="container-fluid">
+            <!-- container-fluid -->
+
+            <!-- including navbar -->
+            <?php $this->load->view('include/navbar'); ?>
+
+            <!-- Page Content -->
+            <div class="container-fluid">
+                <!-- container-fluid -->
+                <div id="error-box" class="alert alert-danger" style="display: none;">Aadhar no already exist</div>
+                <div class="card border-0 shadow mt-4">
+                    <div class="card-body m-4">
+                        <form method="post" action="<?php echo base_url() . 'Visitor/InsertVisitor' ?>" id="visitorForm" enctype="multipart/form-data">
+                            <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" hidden>
+
+
+                            <div class="row mt-2">
+                                <div class="col-md-12 mb-4">
+                                    <label for="token">Token Number:</label>
+                                    <input type="text" name="token_no" id="token_no" class="form-control"
+                                        placeholder="Token Number" value="<?php echo $id; ?>" readonly>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 mb-4">
+                                    <label for="aadhar_no">Aadhar Number:</label>
+                                    <input type="text" name="aadhar_no" id="aadhar_no"
+                                        oninput="this.value=this.value.replace(/[^0-9]/g,'');;" size="12"
+                                        minlength="12" maxlength="12" class="form-control"
+                                        placeholder="Enter Aadhar Number">
+                                    <!-- <input type="text" name="aadhar_no" id="aadhar_no" oninput="this.value=this.value.replace(/[^0-9]/g,'');checkadhar();" size="12" minlength="12" maxlength="12" class="form-control" placeholder="Enter Aadhar Number" required> -->
+                                    <small id="aadharerror" class="error text-danger"></small>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 mb-4">
+                                    <label for="name">Full Name:</label>
+                                    <input type="text" name="full_name" id="full_name"
+                                        oninput="this.value=this.value.replace(/[^a-z\sA-Z]/g,'');ws(this.id);"
+                                        class="form-control" placeholder="Enter Full Name">
+                                    <small id="nameerror" class="error text-danger"></small>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 mb-4">
+                                    <label for="number">Mobile Number:</label>
+                                    <input type="text" name="mobile_no" id="mobile_no"
+                                        oninput="this.value=this.value.replace(/[^0-9]/g,'');" size="10" minlength="10"
+                                        maxlength="10" class="form-control" placeholder="Enter Mobile Number">
+                                    <small id="contacterror" class="error text-danger"></small>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-12 mb-4">
+                                    <label for="address">Address:</label>
+                                    <textarea name="address" id="address" class="form-control" rows="3"
+                                        oninput="this.value=this.value.replace(/[^a-z\sA-Z0-9,.-]/g,'');ws(this.id);"
+                                        placeholder="Enter Address"></textarea>
+                                    <small id="addrerror" class="error text-danger"></small>
+
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-4">
+                                    <label for="to_see_whom">To See Whom:</label>
+                                    <!-- <input type="text" name="to_see_whom" id="to_see_whom" class="form-control"> -->
+                                    <select name="to_see_whom" id="to_see_whom" class="form-control"
+                                        onchange="updateOfficerDetails()" required>
+                                        <option value="">Select</option>
+                                        <?php
+                                        // Fetch officer data from the database
+                                        foreach ($officers as $officer) {
+                                            if ($officer['full_name'] != null) {
+                                        ?>
+                                                <option value="<?php echo $officer['full_name']; ?>"
+                                                    data-name="<?php echo $officer['id']; ?>">
+                                                    <?php echo $officer['full_name']; ?>
+
+                                                </option>
+                                        <?php }
+                                        } ?>
+                                    </select>
+                                    <small id="seewhomerror" class="error text-danger"></small>
+                                </div>
+
+                                <!-- Hidden input field to store the officer's id -->
+                                <input type="hidden" name="officer_id" id="selected_officer_id" value="<?php echo $id; ?>">
+                                <input type="hidden" name="visitor_id" value="<?php echo $id; ?>">
+
+                            </div>
+                            <!-- <div class="col-md-12 mb-4">
+                                <label for="access">Access:</label>
+                                <select name="access[]" id="access" class="form-control" multiple required>
+                                    <option value="License Gate">License Gate</option>
+                                    <option value="Main Gate">Main Gate</option>
+                                    <option value="Driver Gate">Driver Gate</option>
+                                </select>
+                                <small id="accesserror" class="error text-danger"></small>
+                            </div> -->
+
+                            <div class="row">
+                                <div class="col-md-12 mb-4">
+                                    <label for="purpose_to_visit">Purpose To Visit:</label>
+                                    <textarea name="purpose_to_visit" id="purpose_to_visit"
+                                        oninput="this.value=this.value.replace(/[^a-z\sA-Z]/g,'');ws(this.id);"
+                                        placeholder="Enter the Purpose To Visit" class="form-control"
+                                        rows="3"></textarea>
+                                    <small id="purposeerror" class="error text-danger"></small>
+                                </div>
+
+                            </div>
+
+                            <div class="row mb-4">
+                                <label for="photo">Capture Photo:</label>
+                                <div class="col-md-6">
+                                    <div id="camera-feed">
+                                        <video id="video" width="320" height="240" autoplay></video><br>
+                                        <small id="photoValidation" class="error text-danger"></small>
+                                    </div>
+                                    <button type="button" class="btn btn-primary" id="capture-btn"
+                                        onclick="showCanvas()">Capture</button>
+                                    <input type="hidden" id="photo" name="photo" value="" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+                                    <img src="" alt="" id="pic" width="320" height="240" style="display:none;"><br><br>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <label for="photo">ID Card Photo:</label>
+                                <div class="col-md-6">
+                                    <div id="camera-feed">
+                                        <video id="videoid" width="320" height="240" autoplay></video><br>
+                                        <small id="photoValidationid" class="error text-danger"></small>
+                                    </div>
+                                    <button type="button" class="btn btn-primary" id="capture-btnid"
+                                        onclick="showCanvasId()">Capture</button>
+                                    <input type="hidden" id="photoid" name="idphoto" value="" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <canvas id="canvasid" width="320" height="240" style="display:none;"></canvas>
+                                    <img src="" alt="" id="picid" width="320" height="240" style="display:none;"><br><br>
+                                </div>
+                            </div>
+
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_regular" value="1"
+                                    id="is_regular">
+                                <label class="form-check-label" for="is_regular">
+                                    Is Regular ?
+                                </label>
+                            </div>
+                            <div class="d-grid gap-2 d-sm-block mt-4">
+
+                                <button type="submit" class="btn btn-primary" id="submit">
+                                    <i class="fa-solid fa-floppy-disk"></i> Save</button>
+                                <!-- <button type="submit" class="btn btn-primary" name="submit"><i class="fa-solid fa-floppy-disk"></i>  Save</button>  -->
+                                <!-- <button class="btn btn-secondary" name="submit"><i class="fa-solid fa-id-card"></i>  Id Card</button> -->
+                                <a href="<?php echo base_url() . 'Visitor' ?>" class="btn btn-danger"><i
+                                        class="fa-solid fa-arrow-left"></i>Back</a>
+                                <div>
+                                </div>
+
+                        </form>
+                    </div>
+                </div>
+
+
+            </div> <!-- container-fluid ends -->
+            <!-- </div> -->
+
+        </div>
+        <!-- refresh code -->
+
+
+        <script>
+            // code for autofilling if aadhar already exists
+
+            document.getElementById('aadhar_no').addEventListener('input', function() {
+                const aadharNo = this.value; // Get the Aadhaar number from the input field
+
+                if (aadharNo.length === 12) { // Check if Aadhaar number has 12 digits
+                    fetch(`<?= base_url("Common/checkAadhar") ?>?aadhar_no=${aadharNo}`, {
+                            method: 'GET', // Use GET method
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status) {
+                                console.log(data);
+                                // If Aadhaar exists, autofill the form fields
+                                document.getElementById('full_name').value = data.data.full_name;
+                                document.getElementById('mobile_no').value = data.data.mobile_no;
+                                document.getElementById('address').value = data.data.address;
+
+                                document.getElementById('firm_name').value = data.data.firm_name;
+                                document.getElementById('truck_no').value = data.data.truck_no;
+
+                            } else {
+                                // If Aadhaar does not exist, clear the fields and show a message
+                                document.getElementById('full_name').value = '';
+                                document.getElementById('mobile_no').value = '';
+                                document.getElementById('address').value = '';
+                                document.getElementById('firm_name').value = '';
+                                document.getElementById('truck_no').value = '';
+                                alert(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                }
+            });
+        </script>
+
+        <!-- Custom JavaScript -->
+        <script>
+            // Function to update the hidden field with the selected officer's ID
+            function updateOfficerDetails() {
+                var officerSelect = document.getElementById('to_see_whom');
+                var selectedOption = officerSelect.options[officerSelect.selectedIndex];
+
+                // Get the officer's full name (from the value of the selected option)
+                var officerFullName = selectedOption.value;
+
+                // Get the officer's ID (from the data-id attribute of the selected option)
+                var officerId = selectedOption.getAttribute('data-name');
+
+                // Set the hidden input field with the officer's ID
+                document.getElementById('selected_officer_id').value = officerId;
+
+                // Optionally, you can display the officer's full name somewhere else in the form if needed
+                console.log("Selected Officer: " + officerFullName + " (ID: " + officerId + ")");
+            }
+        </script>
+
+        </main>
+        <!-- capture photo -->
+        <script>
+            navigator.mediaDevices.getUserMedia({
+                    video: true
+                })
+                .then(function(stream) {
+                    var video = document.getElementById('video');
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(err) {
+                    console.log("An error occurred: " + err);
+                });
+
+            function showCanvas() {
+                document.getElementById('canvas').style.display = 'block';
+            }
+
+            document.getElementById('capture-btn').addEventListener('click', function() {
+                var video = document.getElementById('video');
+                var canvas = document.getElementById('canvas');
+                var context = canvas.getContext('2d');
+                canvas.width = 320;
+                canvas.height = 240;
+
+                context.drawImage(video, 0, 0, 320, 240);
+                var photo = canvas.toDataURL('image/png');
+                document.getElementById('photo').value = photo;
+            });
+        </script>
+
+        <!-- capture photo Id-->
+        <script>
+            navigator.mediaDevices.getUserMedia({
+                    video: true
+                })
+                .then(function(stream) {
+                    var video = document.getElementById('videoid');
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(err) {
+                    console.log("An error occurred: " + err);
+                });
+
+            function showCanvasId() {
+                document.getElementById('canvasid').style.display = 'block';
+            }
+
+            document.getElementById('capture-btnid').addEventListener('click', function() {
+                var video = document.getElementById('videoid');
+                var canvas = document.getElementById('canvasid');
+                var context = canvas.getContext('2d');
+                canvas.width = 320;
+                canvas.height = 240;
+
+                context.drawImage(video, 0, 0, 320, 240);
+                var photo = canvas.toDataURL('image/png');
+
+                document.getElementById('photoid').value = photo;
+            });
+        </script>
+
+
+        <!-- giving title to document and navbar -->
+        <script>
+            document.getElementById('page-title').innerHTML = "IOCL  INOUT | Visitor Form";
+            document.getElementById("navbar-title").innerHTML = "Add Visitor Form <i class='fa-solid fa-users'></i>";
+        </script>
+
+        <!-- Bootstrap JS (optional, only needed if you use Bootstrap components that require JavaScript) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+        </script>
+
+
+        <!-- script for autofill -->
+        <script>
+            function ws(name) {
+                var name = document.getElementById(name);
+                name.value = name.value.replace(/^\s+/, '');
+
+            }
+
+            const token = document.getElementById('token_no').value.trim();
+        </script>
+
+
+        <!-- Font Awesome JS (optional, only needed if you use Font Awesome icons) -->
+        <script src="https://kit.fontawesome.com/6ee00b2260.js" crossorigin="anonymous"></script>
+
+        <!-- Custom JavaScript -->
+        <script>
+            // JavaScript to toggle sidebar
+            // document.getElementById('sidebar-toggle').addEventListener('click', function () {
+            //      document.querySelector('.wrapper').classList.toggle('sidebar-open');
+            //      document.querySelector('.wrapper').classList.toggle('sidebar-closed');
+            // });
+            document.getElementById('sidebar-toggle').addEventListener('click', function() {
+                document.querySelector('.wrapper').classList.toggle('sidebar-open');
+                document.querySelector('.wrapper').classList.toggle('sidebar-closed');
+            });
+        </script>
+        <script>
+            document.getElementById("visitorForm").addEventListener("submit", function(event) {
+                if (!validateForm()) {
+                    event.preventDefault(); // Prevent form submission if any validation fails
+                }
+            });
+
+            var aadharnoField = document.getElementById("aadhar_no");
+            var contactField = document.getElementById("mobile_no");
+            var nameField = document.getElementById("full_name");
+            var addrField = document.getElementById("address");
+            var purposeField = document.getElementById("purpose_to_visit");
+            var seewhomField = document.getElementById("to_see_whom");
+
+            aadharnoField.addEventListener("input", validateAadharNo);
+            contactField.addEventListener("input", validateContact);
+            nameField.addEventListener("input", validateName);
+            addrField.addEventListener("input", validateAddr);
+            purposeField.addEventListener("input", validatePurpose);
+            seewhomField.addEventListener("change", validateSeeWhom);
+
+            function validateAadharNo() {
+                var aadharno = aadharnoField.value;
+                var errorElement = document.getElementById("aadharerror");
+
+                if (aadharno.length < 12) {
+                    errorElement.textContent = "Aadhar number should be at least 12 digits.";
+                    aadharnoField.focus();
+                    aadharnoField.classList.add("invalid");
+                    return false;
+                } else {
+                    errorElement.textContent = "";
+                    aadharnoField.classList.remove("invalid");
+                    return true;
+                }
+            }
+
+            function validateContact() {
+                var contact = contactField.value;
+                var errorElement = document.getElementById("contacterror");
+
+                if (contact.length < 10) {
+                    errorElement.textContent = "Mobile Number should be at least 10 digits.";
+                    contactField.focus();
+                    contactField.classList.add("invalid");
+                    return false;
+                } else {
+                    errorElement.textContent = "";
+                    contactField.classList.remove("invalid");
+                    return true;
+                }
+            }
+
+            function validateName() {
+                var fullname = nameField.value;
+                var errorElement = document.getElementById("nameerror");
+
+                if (fullname.trim() == "") {
+                    errorElement.textContent = "Fill Out This Field";
+                    nameField.classList.add("invalid");
+                    nameField.focus();
+
+                    return false;
+                } else {
+                    errorElement.textContent = "";
+                    nameField.classList.remove("invalid");
+                    return true;
+                }
+            }
+
+            function validatePurpose() {
+                var purpose = purposeField.value;
+                var errorElement = document.getElementById("purposeerror");
+
+                if (purpose.trim() == "") {
+                    errorElement.textContent = "Fill Out This Field";
+                    purposeField.focus();
+                    purposeField.classList.add("invalid");
+                    return false;
+                } else {
+                    errorElement.textContent = "";
+                    purposeField.classList.remove("invalid");
+                    return true;
+                }
+            }
+
+            function validateSeeWhom() {
+                var see = seewhomField.value;
+                var errorElement = document.getElementById("seewhomerror");
+
+                if (see == "") {
+                    errorElement.textContent = "Please Select The Person To Visit";
+                    seewhomField.focus();
+                    seewhomField.classList.add("invalid");
+                    return false;
+                } else {
+                    errorElement.textContent = "";
+                    seewhomField.classList.remove("invalid");
+                    return true;
+                }
+            }
+
+            function validateAddr() {
+                var address = addrField.value;
+                var errorElement = document.getElementById("addrerror");
+
+                if (address.trim() == "") {
+                    errorElement.textContent = "Fill Out This Field";
+                    addrField.focus();
+                    addrField.classList.add("invalid");
+                    return false;
+                } else {
+                    errorElement.textContent = "";
+                    addrField.classList.remove("invalid");
+                    return true;
+                }
+            }
+
+            function validatePhoto() {
+                var photoInput = document.getElementById("photo").value;
+                var photoValidation = document.getElementById("photoValidation");
+
+                if (photoInput == "") {
+                    photoValidation.textContent = "Please capture the photo of the visitor.";
+                    photoValidation.style.display = 'block';
+                    return false;
+                } else {
+                    photoValidation.textContent = "";
+                    photoValidation.style.display = 'none';
+                    return true;
+                }
+            }
+
+            function validatePhotoId() {
+    var photoIdValue = document.getElementById("photoid").value;
+    var photoIdValidation = document.getElementById("photoValidationid");
+
+    if (photoIdValue == "") {
+        photoIdValidation.textContent = "Please capture the ID card photo.";
+        photoIdValidation.style.display = 'block';
+        return false;
+    } else {
+        photoIdValidation.textContent = "";
+        photoIdValidation.style.display = 'none';
+        return true;
+    }
+}
+
+function validateForm() {
+    return validateAadharNo() && validateName() && validateContact() && validateAddr() && validateSeeWhom() &&
+        validatePurpose() && validatePhoto() && validatePhotoId();
+}
+        </script>
+</body>
+
+</html>
