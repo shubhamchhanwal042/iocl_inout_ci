@@ -141,7 +141,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -320,7 +319,7 @@ function approveRequest(button) {
             console.log("Response from server: " + response);
 
             if (response == "success") {
-                alert("Status updated successfully!");
+                alert("Request Accepted successfully!");
                 button.disabled = true;
                 button.innerText = "Approved";
                 location.reload(); // Refresh the page

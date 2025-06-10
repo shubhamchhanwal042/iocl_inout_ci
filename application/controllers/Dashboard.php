@@ -53,7 +53,7 @@ class Dashboard extends CI_Controller {
 		$data['driver'] = $this->DashboardModel->totalDriverStaffCount();
 		$data['project'] = $this->DashboardModel->totalProjectStaffCount();
 		$data['visitor'] = $this->DashboardModel->totalVisitorStaffCount();
-		//  $data['parkingcounts'] = $this->ParkingModel->get_slot_counts();
+		 $data['parkingcounts'] = $this->ParkingModel->get_slot_counts();
 
 		$response = array('status' => 'success', 'data' => $data);
 		echo json_encode($response);

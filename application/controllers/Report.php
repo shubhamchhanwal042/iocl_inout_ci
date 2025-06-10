@@ -288,4 +288,104 @@ function Parkingreportform(){
     }
 
     // -------------------------------------ENDS HERE----------------------------------------------
+    public function WorkingHoursReport()
+    {
+        $this->load->view('Report/workinghrs');
+    }
+
+    public function fetchReport()
+    {
+        $fromdate = $this->input->post('fromdate');
+        $todate   = $this->input->post('todate');
+        $dept     = $this->input->post('dept');
+        $section  = strtolower($this->input->post('sub_dept'));
+        $name     = $this->input->post('s_by_name');
+
+        // Normalize section names
+        $map = [
+            'officer'           => 'OFC', 'employee' => 'EMP', 'contractor' => 'CON',
+            'contractor workman'=> 'CONW', 'gat'     => 'GAT', 'tat'        => 'TAT',
+            'sec'               => 'SEC', 'feg'     => 'FEG', 'packed'     => 'PT',
+            'bulk'              => 'BK',  'transporter' => 'TR', 'workman' => 'PW',
+            'amc'               => 'AMC', 'visitor' => 'V'
+        ];
+        $section = $map[$section] ?? $section;
+
+        $records = $this->ReportModel->getGateLogs($fromdate, $todate, $dept, $section, $name);
+
+        if (empty($records)) {
+            echo json_encode(['error' => 'No records found']);
+            return;
+        }
+
+        $firstIn = $lastOut = null;
+        $totalSeconds = 0;
+        $openIn = $openOut = null;
+
+        foreach ($records as $row) {
+            $date    = $row->date;
+            $intime  = $row->intime;
+            $outtime = $row->outtime;
+
+            if ($intime !== '00:00:00') {
+                $in = strtotime("$date $intime");
+
+                if ($outtime !== '00:00:00') {
+                    $out = strtotime("$date $outtime");
+
+                    // Overnight correction
+                    if ($out < $in) {
+                        $out = strtotime("+1 day", $out);
+                    }
+
+                    $totalSeconds += ($out - $in);
+                    $firstIn = ($firstIn === null || $in < $firstIn) ? $in : $firstIn;
+                    $lastOut = ($lastOut === null || $out > $lastOut) ? $out : $lastOut;
+                } else {
+                    $openIn = ($openIn === null || $in < $openIn) ? $in : $openIn;
+                }
+            } elseif ($outtime !== '00:00:00') {
+                $out = strtotime("$date $outtime");
+                $openOut = ($openOut === null || $out > $openOut) ? $out : $openOut;
+            }
+        }
+
+        // Add open session duration
+        if ($openIn && $openOut) {
+            $totalSeconds += ($openOut - $openIn);
+        }
+
+        if (!$firstIn || !$lastOut) {
+            echo json_encode(['error' => 'Could not determine time window']);
+            return;
+        }
+
+        $totalShift = $lastOut - $firstIn;
+        $absent     = $totalShift - $totalSeconds;
+
+        $response = [
+            'name'        => $name,
+            'fromdate'    => $fromdate,
+            'todate'      => $todate,
+            'dept'        => $dept,
+            'subdept'     => $section,
+            'timein'      => date('H:i:s', $firstIn),
+            'timeout'     => date('H:i:s', $lastOut),
+            'shifthrs'    => $this->formatDuration($totalShift),
+            'notwork'     => $this->formatDuration($absent),
+            'totalworkhrs'=> $this->formatDuration($totalSeconds)
+        ];
+
+        echo json_encode($response);
+    }
+
+    // Helper inside controller (or create a global helper if reused)
+    private function formatDuration($seconds)
+    {
+        return sprintf('%02d:%02d:%02d',
+            floor($seconds / 3600),
+            floor(($seconds % 3600) / 60),
+            $seconds % 60
+            );
+        }
 }

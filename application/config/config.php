@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // $config['api_url'] = 'http://localhost/hpcl_inout_api/';
 
 
-$config['base_url'] = 'http://localhost/iocl_inout_old/';
+$config['base_url'] = 'http://localhost/iocl_inout_ci/';
 $config['api_base_url'] = 'http://localhost/iocl_inout/';
 $config['api_url'] = 'http://localhost/iocl_inout/';
 // $config['base_url'] = 'https://08d7-2405-201-1006-2801-f1e0-2893-f54b-10c5.ngrok-free.app/Indian_Tradition/';
@@ -322,7 +322,7 @@ $config['sess_regenerate_destroy'] = FALSE;
 |
 | Note: These settings (with the exception of 'cookie_prefix' and
 |       'cookie_httponly') will also affect sessions.
-|
+|   
 */
 $config['cookie_prefix']	= '';
 $config['cookie_domain']	= '';

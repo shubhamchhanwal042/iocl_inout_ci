@@ -211,7 +211,8 @@ class VisitorModel extends CI_Model {
 
     }
 
-    public function updateVisitorById($id,$data){
+ public function updateVisitorById($id,$data){
+       unset ($data['to_see_whom_id']); // Remove 'id' from data array if it exists
         // Perform the update operation
         $this->db->where('id', $id);  
         return $this->db->update('visitor', $data);  
@@ -460,6 +461,8 @@ public function insertNotifications($data) {
 //pass officer id correctly then this part will be done and notifications will work properly
 public function updateNotifications($id, $data) {
     // Check if notifications exist for the visitor
+        // print_R($data);die;
+
     $this->db->where('visitor_id', $id);
     $query = $this->db->get('notification');
 
@@ -469,7 +472,7 @@ public function updateNotifications($id, $data) {
             $update_data = [
                 'to_see_whom' => $data['to_see_whom'],
                 'purpose_to_visit' => $data['purpose_to_visit'],
-                'officer_id' => $data['officer_id'],
+                'officer_id' => $data['to_see_whom_id'],
                 'access' => $access
             ];
             $this->db->where('visitor_id', $id);
@@ -482,6 +485,7 @@ public function updateNotifications($id, $data) {
         return false;
     }
 }
+
 
 
 

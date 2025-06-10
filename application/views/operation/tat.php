@@ -297,14 +297,14 @@
                                              <span class="bg-danger text-light">${tatStatusMessage}</span>
                                         </p>
                                    </div>
-                                   <div style="position: relative;">
-                                        <p class="h4"
-                                             style="color:white;position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
-                                             ${result.token_no}
-                                        </p>
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQrAfNAjMWDejP0YqvXWZLsIBWWwKn0IJv1AgXVEa7bw&s"
-                                             class="card-img-top" alt="...">
-                                   </div>
+                                    <div style="position: relative;">
+                                    <!-- style="color:white;position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;" -->
+                                    <p class="fs-3 fw-bold border-bottom border-2">
+                                    ${result.token_no}
+                                   </p>
+                                   <img src="<?php echo base_url().'assets/images/redcylinder.png';?>"
+                                    class="card-img-top w-50" alt="..." >
+                                 </div>
                                    <div class="card-body">
                                         <h5 class="card-title" style="height: 30px; overflow: hidden;">${result.full_name || '<?php null; ?>'}</h5>
                                         <a href="${result.full_name ? 'EditTat/' + result.id : 'AddTat/' + result.id}" class="btn btn-primary form-control ${buttonDisabled}">

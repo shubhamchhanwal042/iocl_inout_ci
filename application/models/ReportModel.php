@@ -274,4 +274,17 @@ class ReportModel extends CI_Model
         return $query->result_array();
     }
 
+    public function getGateLogs($fromdate, $todate, $dept, $section, $name)
+    {
+        $table = ($dept === 'driver') ? 'drivergate' : 'maingate';
+
+        $this->db->from($table)
+            ->where('date >=', $fromdate)
+            ->where('date <=', $todate)
+            ->like('name', $name)
+            ->where('department', $dept)
+            ->where('section', $section);
+
+        return $this->db->get()->result(); // just fetch data
+        }
 }

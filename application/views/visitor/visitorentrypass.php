@@ -494,6 +494,10 @@
                                         <?php echo $visitor['visitor_status'] == 1 ? 'Approved' : 'Pending'; ?>
                                     </span>
                                 </p>
+                                <p style="font-weight: bold;">Access: <span style="color:red;";>
+                                        <?php echo $visitor['access']; ?>
+                                    </span>
+                                </p>
                                 <!-- <input type="text" readonly> -->
 
                             </div>

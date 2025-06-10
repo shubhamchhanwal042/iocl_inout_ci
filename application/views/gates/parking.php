@@ -257,17 +257,26 @@
                                                 <div class="form-group"><input type="text" name="full_name"
                                                         class="form-control" required></div>
                                                 <label for="aadhar_no">Aadhar Number:</label>
-                                                <div class="form-group"><input type="text" name="aadhar_no"
-                                                        class="form-control" required></div>
+                                                <div class="form-group">
+                                                    <input type="text" name="aadhar_no"
+                                                        class="form-control"
+                                                        required
+                                                        maxlength="12"
+                                                        minlength="12"
+                                                        pattern="\d{12}"
+                                                        inputmode="numeric"
+                                                        oninput="this.value = this.value.replace(/\D/g, '').slice(0,12);"
+                                                        placeholder="Enter 12-digit Aadhar number">
+                                                </div>
                                                 <label for="vechile_type">Vehicle Type:</label>
                                                 <div class="form-group"><input type="text" name="vechile_type"
-                                                        class="form-control" required></div>
+                                                        class="form-control" required placeholder="Enter Vechile Type"></div>
                                                 <label for="vechile_number">Vehicle Number:</label>
                                                 <div class="form-group"><input type="text" name="vechile_number"
-                                                        class="form-control" required></div>
+                                                        class="form-control" required placeholder="Enter Vechile"></div>
                                                 <label for="parking_date">Parking Date:</label>
                                                 <div class="form-group"><input type="date" name="parking_date"
-                                                        class="form-control" required></div>
+                                                        class="form-control" value="<?= date('Y-m-d') ?>" required></div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="submit" class="btn btn-success">Save</button>

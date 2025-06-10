@@ -178,7 +178,7 @@ $route['AdvancedReport'] = 'Report/AdvancedReport';
 $route['NightReport'] = 'Report/NightReport';
 $route['parkingreport'] = 'Report/Parkingreportform';
 // $route['NightReport/(:any)'] = 'Report/NightReport/$1';
-
+$route['WorkingHours'] = 'Report/WorkingHoursReport';
 //END REPORT
 
 $route['Parking'] = 'ParkingController/GetParking';

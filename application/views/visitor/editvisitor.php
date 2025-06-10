@@ -154,8 +154,8 @@
                                 </div>
                                 <div class="col-md-12 mb-2">
                                     <label for="to_see_whom">To See Whom:</label>
-                                    <select name="to_see_whom" id="to_see_whom" class="form-control"
-                                        onchange="updateOfficerDetails()" required>
+                                     <select name="to_see_whom" id="to_see_whom" class="form-control"
+                                        onchange="updateOfficerDetails()" required >
                                         <option value="">Select</option>
                                         <?php
                                              // Fetch officer data from the database
@@ -165,16 +165,17 @@
                                                        $selected = ($officer['full_name'] == $visitor['to_see_whom']) ? 'selected' : '';
                                         ?>
                                         <option value="<?php echo $officer['full_name']; ?>"
-                                            data-name="<?php echo $officer['id']; ?>" <?php echo $selected; ?>>
+                                            data-id="<?php echo $officer['id']; ?>" <?php echo $selected; ?>>
                                             <?php echo $officer['full_name']; ?>
                                         </option>
                                         <?php 
-            } 
-        } 
-    ?>
-                                    </select>
+                                            } 
+                                         } 
+                                          ?>
+                                        </select>
+                                        <input type="hidden" name="to_see_whom_id" id="to_see_whom_id" />
 
-                                    <small id="seewhomerror" class="error text-danger"></small>
+                                     <small id="seewhomerror" class="error text-danger"></small>
 
 
                                 </div>
@@ -356,7 +357,14 @@
         }
         </script>
 
-
+            <script>
+            function updateOfficerDetails() {
+                var select = document.getElementById('to_see_whom');
+                var selectedOption = select.options[select.selectedIndex];
+                var officerId = selectedOption.getAttribute('data-id') || '';
+                document.getElementById('to_see_whom_id').value = officerId;
+            }
+            </script>
         <!-- ID capture photo -->
         <script>
         navigator.mediaDevices.getUserMedia({

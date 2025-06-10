@@ -75,7 +75,7 @@
         <?php $this->load->view('include/sidebar'); ?>
 
         <!-- <div class="main-content"> -->
-        <div class="container-fluid">
+ <div class="container-fluid">
             <!-- container-fluid -->
 
             <!-- including navbar -->
@@ -92,777 +92,310 @@
             // }
             ?>
 
+            <!-- <div class="container-fluid"> -->
+            <!-- container-fluid -->
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="success-alert alert alert-success" role="alert">
+                        <span id="alert-msg-success"></span>
+                    </div>
+                    <div class="danger-alert alert alert-danger" role="alert">
+                        <span id="alert-msg-danger"></span>
+                    </div>
 
-            <!-- Page Content -->
-            <div class="container-fluid">
-                <!-- container-fluid -->
+                </div>
+                <div class="col-sm-7">
+                    <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" class="row">
+                        <div class="col-6">
+                            <input type="password" name="reset-pass" placeholder="Reset Count" class="form-control">
+                            <!-- <button class="form-control btn btn-outline-dark p-0 ">Reset Count</button> -->
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" name="reset-btn" class="form-control btn btn-success">
+                                <i class="fa-solid fa-arrows-rotate"></i>&nbsp;<span>Reset</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="content mt-3">
                 <div class="row">
-                    <div class="col-sm-12">
-                        <div class="success-alert alert alert-success" role="alert">
-                            <span id="alert-msg-success"></span>
+                    <div class="col-lg-4">
+                        <div class="card border border-primary py-2">
+                            <p class="h4 text-primary text-center">Main Gate</p>
+                            <p class="h1 text-black text-center" id="main_total1">
+                            </p>
                         </div>
-                        <div class="danger-alert alert alert-danger" role="alert">
-                            <span id="alert-msg-danger"></span>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card border border-danger py-2">
+                            <p class="h4 text-danger text-center">License Gate</p>
+                            <p class="h1 text-black text-center" id="lic_total1">
+                            </p>
                         </div>
-
                     </div>
-                    <div class="col-lg-6">
-                        <p>
-                            <span class="h4">Generate Contractor Workman List: </span>
-                            <a class="btn btn-success h4" href="<?php echo base_url('Dashboard/breakconwlist') ?>">Generate List</a>
-                        </p>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                        <form id="reset-form" class="row">
-                            <div class="col-6">
-                                <input type="password" id="reset-pass" name="reset-pass" placeholder="Reset Count" oninput="ws(this.id)" class="form-control" required>
-                                <!-- <button class="form-control btn btn-outline-dark p-0 ">Reset Count</button> -->
-                            </div>
-                            <div class="col-6">
-                                <button type="submit" name="reset-btn" class="form-control btn btn-success">
-                                    <i class="fa-solid fa-arrows-rotate"></i>&nbsp;<span>Reset</span>
-                                </button>
-                            </div>
-                        </form>
 
-                        <script>
-                            document.getElementById('reset-form').addEventListener('submit', async function(event) {
-                                event.preventDefault();
-                                const password = document.getElementById('reset-pass').value;
-                                const form = new FormData();
-                                form.append('reset-pass', password);
-
-                                Swal.fire({
-                                    title: 'Are you sure?',
-                                    text: "You won't be able to revert this!",
-                                    icon: 'warning',
-                                    showCancelButton: true,
-                                    confirmButtonColor: '#d33',
-                                    cancelButtonColor: '#3085d6',
-                                    confirmButtonText: 'Yes, reset it!',
-                                    cancelButtonText: 'Cancel'
-                                }).then(async (result) => {
-                                    if (result.isConfirmed) {
-                                        try {
-                                            const response = await fetch(
-                                                '<?php echo base_url('Dashboard/ResetCount') ?>', {
-                                                    method: 'POST',
-                                                    body: form
-                                                });
-
-                                            if (response.ok) {
-                                                const result = await response.json();
-                                                if (result.status == 'success') {
-                                                    Swal.fire({
-                                                        title: 'Success!',
-                                                        text: 'Dashboard count reset successfully.',
-                                                        icon: 'success',
-                                                        confirmButtonText: 'OK'
-                                                    }).then(() => {
-                                                        location
-                                                            .reload(); // Reload the page after successful reset
-                                                    });
-                                                } else {
-                                                    Swal.fire({
-                                                        title: 'Error!',
-                                                        text: result.message,
-                                                        icon: 'error',
-                                                        confirmButtonText: 'OK'
-                                                    });
-                                                    // Handle error (e.g., show an error message)
-                                                }
-                                            } else {
-                                                console.error('Reset failed:', response.statusText);
-                                                // Handle error (e.g., show an error message)
-                                            }
-                                        } catch (error) {
-                                            console.error('Error:', error);
-                                            // Handle error (e.g., show an error message)
-                                        }
-                                    }
-                                });
-                            });
-                        </script>
-                    </div>
-                </div>
-
-                <!-- main gate section -->
-                <div class="content mt-3">
-
-                    <?php // print_r($notifications);die;
-                    ?>
-                    <p>
-                        <span class="h4">TOTAL <span class="fw-bolder">IN </span>COUNT </span>
-                        <span class="label label-default fs-4 bg-primary">Main Gate</span>
-                    </p>
-
-                    <div class="d-flex flex-lg-row flex-md-row flex-column justify-content-between gap-4">
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <div class="card pe-2 p-3 flex-fill">
-                                <div class="card-body">
-                                    <a href="<?php echo base_url('Dashboard/Infomore/operation/maingate') ?>"
-                                        class="text-decoration-none text-dark">
-                                        <div class="d-flex justify-content-between">
-                                            <div class="">
-                                                <p class="card-title fs-4 fw-bolder text-danger pe-3">OPERATION</p>
-                                                <p>
-                                                    <span class="h1 fw-bold text-dark" id="main_opr">
-                                                        0
-                                                    </span>
-                                                </p>
-                                            </div>
-                                            <div class="col-3 pt-2">
-                                                <span><i class="fa-solid fs-1 fa-calendar-days"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <a href="<?php echo base_url('Dashboard/Infomore/driver/maingate') ?>"
-                                        class="text-decoration-none text-dark">
-                                        <div class="d-flex justify-content-between">
-                                            <!-- row -->
-                                            <div class="">
-                                                <p class="card-title fs-4 fw-bolder text-primary">DRIVER</p>
-                                                <p><span class="h1 fw-bold" id="main_drv">
-                                                        0
-                                                    </span></p>
-                                            </div>
-                                            <div class="pt-2">
-                                                <span><i class="fa-solid fs-1 fa-truck"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <a href="<?php echo base_url('Dashboard/Infomore/project/maingate') ?>"
-                                        class="text-decoration-none text-dark">
-
-                                        <div class="d-flex justify-content-between">
-                                            <div class="">
-                                                <p class="card-title fs-4 fw-bolder text-warning pe-3">PROJECT</p>
-                                                <p><span class="h1 fw-bold" id="main_prj">
-                                                        0
-                                                    </span></p>
-                                            </div>
-                                            <div class="col-3 pt-2 pe-4">
-                                                <span><i class="fa-solid fs-1 fa-id-card"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-
-                                    <a href="<?php echo base_url('Dashboard/Infomore/visitor/maingate') ?>"
-                                        class="text-decoration-none text-dark">
-                                        <div class="d-flex justify-content-between">
-                                            <div class="">
-                                                <p class="card-title fs-4 fw-bolder text-muted">VISITOR</p>
-                                                <p><span class="h1 fw-bold" id="main_vis">
-                                                        0
-                                                    </span></p>
-                                            </div>
-                                            <div class="col-3 pt-2">
-                                                <span><i class="fa-solid fs-1 fa-users"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <!-- <a href="infomore.php?type=total&gate=main" class="text-decoration-none text-dark"> -->
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <p class="card-title text-danger fs-4 fw-bolder">TOTAL</p>
-                                            <p><span class="h1 fw-bold" id="main_total">
-                                                    0
-                                                </span></p>
-                                        </div>
-                                        <div class="col-3 pt-2">
-                                            <!-- <span><i class="fa-solid fa-calendar-days"></i></span> -->
-                                        </div>
-                                    </div>
-                                    <!-- </a> -->
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                    </div>
-                </div>
-
-                <!-- main gate section ends here -->
-
-                <div class="content mt-3">
-                    <p>
-                        <span class="h4">TOTAL <span class="fw-bolder">IN</span> COUNT</span>
-                        <span class="label label-default fs-4 bg-danger">License Area</span>
-                    </p>
-                    <div class="d-flex flex-lg-row flex-md-row flex-column justify-content-between gap-4">
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <a href="<?php echo base_url('Dashboard/Infomore/operation/licensegate') ?>"
-                                        class="text-decoration-none text-dark">
-                                        <div class="d-flex justify-content-between">
-                                            <div class="pe-0">
-                                                <p class="card-title fs-4 fw-bolder text-danger pe-3">OPERATION</p>
-                                                <p><span class="h1 fw-bold" id="lic_opr">
-                                                        0
-                                                    </span></p>
-
-                                            </div>
-                                            <div class="col-3 pt-2">
-                                                <span><i class="fa-solid fs-1 fa-calendar-days"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <a href="<?php echo base_url('Dashboard/Infomore/driver/licensegate') ?>"
-                                        class="text-decoration-none text-dark">
-                                        <div class="d-flex justify-content-between">
-                                            <div class="">
-                                                <p class="card-title fs-4 fw-bolder text-primary">DRIVER</p>
-                                                <p><span class="h1 fw-bold" id="lic_drv">
-                                                        0
-                                                    </span></p>
-                                            </div>
-                                            <div class="col-3 pt-2">
-                                                <span><i class="fa-solid fs-1 fa-truck"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <a href="<?php echo base_url('Dashboard/Infomore/project/licensegate') ?>"
-                                        class="text-decoration-none text-dark">
-                                        <div class="d-flex justify-content-between">
-                                            <div class="">
-                                                <p class="card-title fs-4 fw-bolder text-warning pe-3">PROJECT</p>
-                                                <p><span class="h1 fw-bold" id="lic_prj">
-                                                        0
-                                                    </span></p>
-                                            </div>
-                                            <div class="col-3 pt-2 pe-4">
-                                                <span><i class="fa-solid fs-1 fa-id-card"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <a href="<?php echo base_url('Dashboard/Infomore/visitor/licensegate') ?>"
-                                        class="text-decoration-none text-dark">
-                                        <div class="d-flex justify-content-between">
-                                            <div class="">
-                                                <p class="card-title fs-4 fw-bolder text-muted">VISITOR</p>
-                                                <p><span class="h1 fw-bold" id="lic_vis">
-                                                        0
-                                                    </span></p>
-                                            </div>
-                                            <div class="col-3 pt-2">
-                                                <span><i class="fa-solid fs-1 fa-users"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <!-- <a href="infomore.php?type=total&gate=license" class="text-decoration-none text-dark"> -->
-                                    <div class="d-flex justify-content-between">
-                                        <div class="">
-                                            <p class="card-title text-danger fs-4 fw-bolder">TOTAL</p>
-                                            <p><span class="h1 fw-bold" id="lic_total">
-                                                    0
-                                                </span></p>
-                                        </div>
-                                        <div class="col-3 pt-2">
-                                            <!-- <span><i class="fa-solid fa-calendar-days"></i></span> -->
-                                        </div>
-                                    </div>
-                                    <!-- </a> -->
-                                </div>
-                            </div>
-                        <!-- </div> -->
-                    </div>
-                </div>
-
-
-                <!-- de-license gate section -->
-                <div class="content mt-3">
-                    <p>
-                        <span class="h4">TOTAL <span class="fw-bolder">IN</span> COUNT</span>
-                        <span class="label label-default fs-4 bg-success">De-License Area</span>
-                    </p>
-
-                    <div class="d-flex flex-lg-row flex-md-row flex-column justify-content-between gap-4">
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <a href="<?php echo base_url('Dashboard/Infomore/operation/delicensearea') ?>"
-                                        class="text-decoration-none text-dark">
-                                        <div class="d-flex justify-content-between">
-                                            <div class="">
-                                                <p class="card-title fs-4 fw-bolder text-danger pe-3">OPERATION</p>
-                                                <p><span class="h1 fw-bold" id="del_opr">
-                                                        0
-                                                    </span></p>
-
-                                            </div>
-                                            <div class="col-3 pt-2">
-                                                <span><i class="fa-solid fs-1 fa-calendar-days"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <a href="<?php echo base_url('Dashboard/Infomore/driver/delicensearea') ?>"
-                                        class="text-decoration-none text-dark">
-                                        <div class="d-flex justify-content-between">
-                                            <div class="">
-                                                <p class="card-title fs-4 fw-bolder text-primary">DRIVER</p>
-                                                <p><span class="h1 fw-bold" id="del_drv">
-                                                        0
-                                                    </span></p>
-                                            </div>
-                                            <div class="col-3 pt-2">
-                                                <span><i class="fa-solid fs-1 fa-truck"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <a href="<?php echo base_url('Dashboard/Infomore/project/delicensearea') ?>"
-                                        class="text-decoration-none text-dark">
-                                        <div class="d-flex justify-content-between">
-                                            <div class="">
-                                                <p class="card-title fs-4 fw-bolder text-warning pe-3">PROJECT</p>
-                                                <p><span class="h1 fw-bold" id="del_prj">
-                                                        0
-                                                    </span></p>
-                                            </div>
-                                            <div class="col-3 pt-2 pe-4">
-                                                <span><i class="fa-solid fs-1 fa-id-card"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <a href="<?php echo base_url('Dashboard/Infomore/visitor/delicensearea') ?>"
-                                        class="text-decoration-none text-dark">
-                                        <div class="d-flex justify-content-between">
-                                            <div class="">
-                                                <p class="card-title fs-4 fw-bolder text-muted ">VISITOR</p>
-                                                <p><span class="h1 fw-bold" id="del_vis">
-                                                        0
-                                                    </span></p>
-                                            </div>
-                                            <div class="col-3 pt-2">
-                                                <span><i class="fa-solid fs-1 fa-users"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <!-- <a href="infomore.php?type=total&gate=delicense" class="text-decoration-none text-dark"> -->
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <p class="card-title text-danger fs-4 fw-bolder">TOTAL</p>
-                                            <p><span class="h1 fw-bold" id="del_total">
-                                                    0
-                                                </span></p>
-                                        </div>
-                                        <div class="col-3 pt-2">
-                                            <!-- <span><i class="fa-solid fa-calendar-days"></i></span> -->
-                                        </div>
-                                    </div>
-                                    <!-- </a> -->
-                                </div>
-                            </div>
-                        <!-- </div> -->
-                    </div>
-                </div>
-
-                <!-- driver main gate section 'drivergate' -->
-                <div class="content mt-3">
-                    <p>
-                        <span class="h4">TOTAL <span class="fw-bolder">IN</span> COUNT</span>
-                        <span class="label label-default fs-4 bg-warning">Driver Main Gate</span>
-                    </p>
-                    <div class="d-flex flex-lg-row flex-md-row flex-column justify-content-between gap-4">
-
-                        <!-- <div class="col-lg-5 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <!-- <a href="infomore.php?type=operation&gate=driver" class="text-decoration-none text-dark"> -->
-                                    <div class="d-flex justify-content-between">
-                                        <div class="pe-0">
-                                            <p class="card-title fs-4 fw-bolder text-danger pe-3">Truck</p>
-                                            <p><span class="h1 fw-bold" id="drvmain_truck">
-                                                    0
-                                                </span></p>
-
-                                        </div>
-                                        <div class="col-3 pt-2">
-                                            <span><i class="fa-solid fs-1 fa-truck"></i></span>
-                                        </div>
-                                    </div>
-                                    <!-- </a> -->
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-5 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <a href="<?php echo base_url('Dashboard/Infomore/driver/drivermaingate') ?>"
-                                        class="text-decoration-none text-dark">
-
-                                        <div class="d-flex justify-content-between">
-                                            <div class="">
-                                                <p class="card-title fs-4 fw-bolder text-primary">DRIVER</p>
-                                                <p><span class="h1 fw-bold" id="drvmain_drv">
-                                                        0
-                                                    </span></p>
-                                            </div>
-                                            <div class="col-3 pt-2">
-                                                <span><i class="fa-solid fs-1 fa-truck"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="">
-                                            <p class="card-title text-danger fs-4 fw-bolder">TOTAL</p>
-                                            <p><span class="h1 fw-bold" id="drv_total">
-                                                    0
-                                                </span></p>
-                                        </div>
-                                        <div class="col-3 pt-2">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-                    </div>
-                </div>
-
-
-
-                <!-- ----------------------PARKING COUNT --------------------------------- -->
-                 
-                
-
-                <!-- driver licence gate section 'drivergate' -->
-                <div class="content mt-3">
-                    <p>
-                        <span class="h4">TOTAL <span class="fw-bolder">IN</span> COUNT</span>
-                        <span class="label label-default fs-4 bg-danger">Driver Licence Gate</span>
-                    </p>
-                    <div class="d-flex flex-lg-row flex-md-row flex-column justify-content-between gap-4">
-
-                        <!-- <div class="col-lg-5 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <!-- <a href="infomore.php?type=operation&gate=driver" class="text-decoration-none text-dark"> -->
-                                    <div class="d-flex justify-content-between">
-                                        <div class="pe-0">
-                                            <p class="card-title fs-4 fw-bolder text-danger pe-3">Truck</p>
-                                            <p><span class="h1 fw-bold" id="drvlic_truck">
-                                                    0
-                                                </span></p>
-
-                                        </div>
-                                        <div class="col-3 pt-2">
-                                            <span><i class="fa-solid fs-1 fa-truck"></i></span>
-                                        </div>
-                                    </div>
-                                    <!-- </a> -->
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-5 col-md-4 col-sm-6 mb-3"> -->
-                            <!-- col-sm-2 -->
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <a href="<?php echo base_url('Dashboard/Infomore/driver/driverlicensegate') ?>"
-                                        class="text-decoration-none text-dark">
-
-                                        <div class="d-flex justify-content-between">
-                                            <div class="">
-                                                <p class="card-title fs-4 fw-bolder text-primary">DRIVER</p>
-                                                <p><span class="h1 fw-bold" id="drvlic_drv">
-                                                        0
-                                                    </span></p>
-                                            </div>
-                                            <div class="col-3 pt-2">
-                                                <span><i class="fa-solid fs-1 fa-truck"></i></span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        <!-- </div> -->
-
-                        <!-- <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
-                            <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="">
-                                            <p class="card-title text-danger fs-4 fw-bolder">TOTAL</p>
-                                            <p><span class="h1 fw-bold" id="drv_total">
-                                                    0
-                                                </span></p>
-                                        </div>
-                                        <div class="col-3 pt-2">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-                    </div>
-                </div>
-                    <!-- driver main gate section 'drivergate' -->
-
-
-                    <!-- ----------------------------PARKIGN SECION STARAT HERE-------------------- -->
-                <!-- <div class="content mt-3">
-                    <p>
-                        <span class="h4">TOTAL <span class="fw-bolder">IN</span> COUNT</span>
-                        <span class="label label-default fs-4 bg-secondary">Driver Parking Gate</span>
-                    </p>
-                    <div class="d-flex flex-lg-row flex-md-row flex-column justify-content-between gap-4">
-
-                        <div class="card pe-3 p-3 flex-fill">
-                            <div class="card-body">
-                                <a href="<?php //echo base_url('ParkingController/GetParking') ?>" class="text-decoration-none text-dark">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="pe-0">
-                                            <p class="card-title fs-4 fw-bolder text-success pe-3">Vehicle Slots Available</p>
-                                            <p><span class="h1 fw-bold" id="parking_empty">
-                                                    0
-                                                </span></p>
-                                        </div>
-                                        <div class="col-3 pt-2">
-                                            <span><i class="fa-solid fs-1 fa-square-parking"></i></span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                    <div class="col-lg-4">
+                        <div class="card border border-success py-2">
+                            <p class="h4 text-success text-center">De-License Gate</p>
+                            <p class="h1 text-black text-center" id="del_total1">
+                            </p>
                         </div>
-
-                        <div class="card pe-3 p-3 flex-fill">
-                            <div class="card-body">
-                                <a href="<?php //echo base_url('ParkingController/ParkingList') ?>"
-                                    class="text-decoration-none text-dark">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="">
-                                            <p class="card-title fs-4 fw-bolder text-primary">Slots Occupied</p>
-                                            <p><span class="h1 fw-bold" id="parking_filled">
-                                                    0
-                                                </span></p>
-                                        </div>
-                                        <div class="col-3 pt-2">
-                                            <span><i class="fa-solid fs-1 fa-car-on"></i></span>
-                                        </div>
-                                    </div>
-                                </a>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-4">
+                        <div class="row bg-primary mx-1 pb-2 rounded rounded-3">
+                            <div class="col-lg-12">
+                                <p class="h4 text-light text-primary text-center">Truck Main Gate</p>
                             </div>
-                        </div>
-
-                        <div class="card pe-3 p-3 flex-fill">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div class="">
-                                        <p class="card-title fs-4 fw-bolder text-warning">Total Slots</p>
-                                        <p>
-                                            <span class="h1 fw-bold" id="parking_total">
-                                                0
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <div class="col-3 pt-2">
-                                        <span><i class="fa-solid fs-1 fa-warehouse"></i></span>
-                                    </div>
+                            <div class="col-lg-6">
+                                <div class="card border border-primary py-2">
+                                    <p class="h4 text-primary text-center">Driver</p>
+                                    <p class="h1 text-black text-center" id="drvmain_drv"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card border border-primary py-2">
+                                    <p class="h4 text-primary text-center">Truck</p>
+                                    <p class="h1 text-black text-center" id="drvmain_truck"></p>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                </div> -->
 
+                    <div class="col-lg-4">
+                        <div class="row bg-danger mx-1 pb-2 rounded rounded-3">
+                            <div class="col-lg-12">
+                                <p class="h4 text-light text-danger text-center">Truck License Gate</p>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card border border-danger py-2">
+                                    <p class="h4 text-danger text-center">Driver</p>
+                                    <p class="h1 text-black text-center" id="drvlic_drv"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card border border-danger py-2">
+                                    <p class="h4 text-danger text-center">Truck</p>
+                                    <p class="h1 text-black text-center" id="drvlic_truck">
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                <!-- ---------------------------------PARKING SECTION ENDS HERE------------------------ -->
-
-                <div class="content mt-3">
-                    <p><span class="h4">TOTAL STAFF</span> <span class="label label-default fs-4 bg-info">Total
-                            Staff</span></p>
-                    <div class="d-flex flex-lg-row flex-md-row flex-column justify-content-between gap-4">
-                        <!-- <div class="col-lg-3 col-md-6 col-sm-6 mb-3"> -->
-                        <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <!-- <a href="infomore.php?type=operation" class="text-decoration-none text-dark"> -->
-                                    <div class="d-flex justify-content-between">
-                                        <div class="">
-                                            <p class="card-title fs-4 fw-bolder text-danger pe-3">OPERATION</p>
-                                            <p><span class="h1 fw-bold" id="staff_opr">
-                                                    0 &nbsp;
-                                                </span></p>
-                                        </div>
-                                        <div class="col-3 pt-2">
-                                            <span><i class="fa-solid fs-1 fa-calendar-days"></i></span>
-                                        </div>
-                                    </div>
-                                    <!-- </a> -->
+                    <div class="col-lg-4">
+                        <div class="row bg-success mx-1 pb-2 rounded rounded-3">
+                            <div class="col-lg-12">
+                                <p class="h4 text-light text-success text-center">Parking</p>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card border border-success py-2">
+                                    <p class="h4 text-success text-center mb-2">Empty Slots</p>
+                                    <p class="h1 text-black text-center mt-2" id="parking_empty"></p>
                                 </div>
                             </div>
-                        <!-- </div> -->
-                        <!-- <div class="col-lg-3 col-md-6 col-sm-6 mb-3"> -->
-                        <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <!-- <a href="infomore.php?type=operation" class="text-decoration-none text-dark"> -->
-                                    <div class="d-flex justify-content-between">
-                                        <div class="">
-                                            <p class="card-title fs-4 fw-bolder text-primary">DRIVER</p>
-                                            <p><span class="h1 fw-bold" id="staff_drv">
-                                                    0 &nbsp;
-                                                </span></p>
-                                        </div>
-                                        <div class="col-3 pt-2">
-                                            <span><i class="fa-solid fs-1 fa-truck"></i></span>
-                                        </div>
-                                    </div>
-                                    <!-- </a> -->
+                            <div class="col-lg-4">
+                                <div class="card border border-success py-2">
+                                    <p class="h4 text-success text-center mb-2">Parked Slots</p>
+                                    <p class="h1 text-black text-center mt-2" id="parking_filled">
+                                    </p>
                                 </div>
                             </div>
-                        <!-- </div> -->
-                        <!-- <div class="col-lg-3 col-md-6 col-sm-6 mb-3"> -->
-                        <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <!-- <a href="infomore.php?type=operation" class="text-decoration-none text-dark"> -->
-                                    <div class="d-flex justify-content-between">
-                                        <div class="">
-                                            <p class="card-title fs-4 fw-bolder text-warning pe-3">PROJECT</p>
-                                            <p><span class="h1 fw-bold" id="staff_prj">
-                                                    0 &nbsp;
-                                                </span></p>
-                                        </div>
-                                        <div class="col-3 pt-2">
-                                            <span><i class="fa-solid fs-1 fa-id-card"></i></span>
-                                        </div>
-                                    </div>
-                                    <!-- </a> -->
+                            <div class="col-lg-4">
+                                <div class="card border border-success py-2">
+                                    <p class="h4 text-success text-center mb-2">Total<br>Slots</p>
+                                    <p class="h1 text-black text-center mt-2" id="parking_total">
+                                    </p>
                                 </div>
                             </div>
-                        <!-- </div> -->
-                        <!-- <div class="col-lg-3 col-md-6 col-sm-6 mb-3"> -->
-                        <div class="card pe-3 p-3 flex-fill">
-                                <div class="card-body">
-                                    <!-- <a href="infomore.php?type=operation" class="text-decoration-none text-dark"> -->
-                                    <div class="d-flex justify-content-between">
-                                        <div class="">
-                                            <p class="card-title fs-4 fw-bolder text-muted">VISITOR</p>
-                                            <p><span class="h1 fw-bold" id="staff_vis">
-                                                    0 &nbsp;
-                                                </span></p>
-                                        </div>
-                                        <div class="col-3 pt-2">
-                                            <span><i class="fa-solid fs-1 fa-users"></i></span>
-                                        </div>
-                                    </div>
-                                    <!-- </a> -->
-                                </div>
-                            </div>
-                        <!-- </div> -->
+                        </div>
                     </div>
                 </div>
-                <!-- </div> -->
-                <!--  container-fluid ends here -->
-            </div> <!-- container-fluid ends -->
+                <div class="row bg-light mt-3 py-2">
+                    <div class="col-lg-4">
+                        <div class="table-1">
+                            <div class="table-responsive border-top border-x border-1">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <td colspan="3">
+                                                <p class="h4 text-center text-Primary">Main Gate</p>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th class="text-primary">Operation</th>
+                                            <td id="main_opr"></td>
+                                            <td>
+                                                <a class="btn btn-light border border-1" href="<?php echo base_url('Dashboard/Infomore/operation/maingate') ?>">View</a>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="text-danger">Driver</th>
+                                            <td id="main_drv">
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-light border border-1" href="<?php echo base_url('Dashboard/Infomore/driver/maingate') ?>">View</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-warning">Project</th>
+                                            <td id="main_prj"></td>
+                                            <td>
+                                                <a class="btn btn-light border border-1" href="<?php echo base_url('Dashboard/Infomore/project/maingate') ?>">View</a>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="text-secondary">Visitor</th>
+                                            <td id="main_vis"></td>
+                                            <td>
+                                                <a class="btn btn-light border border-1" href="<?php echo base_url('Dashboard/Infomore/visitor/maingate') ?>">View</a>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="text-secondary">Total</th>
+                                            <td id="main_total">
+                                            </td>
+                                            <td>
+                                                <!-- <a class="btn btn-light border border-1" href="">View</a> -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="table-1">
+                            <div class="table-responsive border-top border-x border-1">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <td colspan="3">
+                                                <p class="h4 text-center text-danger">License Gate</p>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th class="text-primary">Operation</th>
+                                            <td id="lic_opr"></td>
+                                            <td>
+                                                <a class="btn btn-light border border-1" href="<?php echo base_url('Dashboard/Infomore/operation/licensegate') ?>">View</a>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="text-danger">Driver</th>
+                                            <td id="lic_drv">
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-light border border-1" href="<?php echo base_url('Dashboard/Infomore/driver/licensegate') ?>">View</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-warning">Project</th>
+                                            <td id="lic_prj"></td>
+                                            <td>
+                                                <a class="btn btn-light border border-1" href="<?php echo base_url('Dashboard/Infomore/project/licensegate') ?>">View</a>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="text-secondary">Visitor</th>
+                                            <td id="lic_vis"></td>
+                                            <td>
+                                                <a class="btn btn-light border border-1" href="<?php echo base_url('Dashboard/Infomore/visitor/licensegate') ?>">View</a>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="text-secondary">Total</th>
+                                            <td id="lic_total">
+                                            </td>
+                                            <td>
+                                                <!-- <a class="btn btn-light border border-1" href="">View</a> -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="table-responsive border-top border-x border-1">
+                            <table class="table m-0 mb-3">
+                                <thead>
+                                    <tr>
+                                        <td colspan="3">
+                                            <p class="h4 text-center text-success">De-License Gate</p>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="text-primary">Operation</th>
+                                        <td id="del_opr"></td>
+                                        <td>
+                                            <!-- <a class="btn btn-light border border-1" href="">View</a> -->
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th class="text-danger">Driver</th>
+                                        <td id="del_drv"></td>
+                                        <td>
+                                            <!-- <a class="btn btn-light border border-1" href="">View</a> -->
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th class="text-warning">Project</th>
+                                        <td id="del_prj"></td>
+                                        <td>
+                                            <!-- <a class="btn btn-light border border-1" href="">View</a> -->
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th class="text-secondary">Visitor</th>
+                                        <td id="del_vis"></td>
+                                        <td>
+                                            <!-- <a class="btn btn-light border border-1" href="">View</a> -->
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th class="text-secondary">Total</th>
+                                        <td id="del_total">
+                                        </td>
+                                        <td>
+                                            <!-- <a class="btn btn-light border border-1" href="">View</a> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="border border-success bg-white d-flex justify-content-between py-1 px-1">
+                            <p class="text-success text-center fs-4 m-0">Contractor Workman</p>
+                            <a class="btn btn-success text-center" href="<?php echo base_url('Dashboard/breakconwlist') ?>">Break Count</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- </div> -->
+            <!-- container-fluid -->
 
         </div>
         <script>
@@ -905,21 +438,17 @@
                 document.getElementById('main_prj').textContent = data.mainGate.Project_count;
                 document.getElementById('main_vis').textContent = data.mainGate.Visitor_count;
                 document.getElementById('main_total').textContent = data.mainGate.total_count;
+                document.getElementById('main_total1').textContent = data.mainGate.total_count;
 
                 document.getElementById('lic_opr').textContent = data.licenseGate.Operation_count;
                 document.getElementById('lic_drv').textContent = data.licenseGate.Driver_count;
                 document.getElementById('lic_prj').textContent = data.licenseGate.Project_count;
                 document.getElementById('lic_vis').textContent = data.licenseGate.Visitor_count;
                 document.getElementById('lic_total').textContent = data.licenseGate.total_count;
+                document.getElementById('lic_total1').textContent = data.licenseGate.total_count;
 
                 document.getElementById('drvmain_truck').textContent = data.driverMainGate.Truck_count;
                 document.getElementById('drvmain_drv').textContent = data.mainGate.Driver_count;
-                // document.getElementById('parking_filled').textContent = data.parkingcounts.filled;
-                // document.getElementById('parking_empty').textContent = data.parkingcounts.empty;
-                // document.getElementById('parking_total').textContent = data.parkingcounts.total;
-
-
-
 
                 document.getElementById('drvlic_truck').textContent = data.driverLicenseGate.Truck_count;
                 document.getElementById('drvlic_drv').textContent = data.licenseGate.Driver_count;
@@ -929,11 +458,16 @@
                 document.getElementById('del_prj').textContent = data.deLicenseArea.Project_count;
                 document.getElementById('del_vis').textContent = data.deLicenseArea.Visitor_count;
                 document.getElementById('del_total').textContent = data.deLicenseArea.total_count;
+                document.getElementById('del_total1').textContent = data.deLicenseArea.total_count;
 
-                document.getElementById('staff_opr').textContent = data.operation;
-                document.getElementById('staff_drv').textContent = data.driver;
-                document.getElementById('staff_prj').textContent = data.project;
-                document.getElementById('staff_vis').textContent = data.visitor;
+                // document.getElementById('staff_opr').textContent = data.operation;
+                // document.getElementById('staff_drv').textContent = data.driver;
+                // document.getElementById('staff_prj').textContent = data.project;
+                // document.getElementById('staff_vis').textContent = data.visitor;
+
+                document.getElementById('parking_filled').textContent = data.parkingcounts.filled != 0 ? data.parkingcounts.filled : 0;
+                document.getElementById('parking_empty').textContent = data.parkingcounts.empty != 0 ? data.parkingcounts.empty : 0;
+                document.getElementById('parking_total').textContent = data.parkingcounts.total != 0 ? data.parkingcounts.total : 0;
 
             }
         </script>

@@ -179,6 +179,21 @@
                 </li>
 
                 <li class="sidebar-item">
+                     <a href="#visitor"
+                        class="sidebar-link collapsed dropdown-toggle flex-row-reverse text-decoration-none link-hover"
+                        data-bs-target="#parking" data-bs-toggle="collapse" aria-expanded="false"
+                        data-toggle="dropdown"><i class="fa-solid fa-truck"></i>
+                        <span class="pe-5">Parking</span> </a>
+
+                    <ul id="parking" class="sidebar-dropdown list-unstyled collapse ms-5" data-bs-parent="#sidebar">
+                        <li class="sidebar-item">
+                             <a href="<?php echo base_url() . 'Parking'; ?>"
+                                class="sidebar-link text-decoration-none link-hover">Parking Section</a>
+                        </li>
+                    </ul> 
+                </li>
+
+                <li class="sidebar-item">
                     <a href="#report" class="sidebar-link collapsed dropdown-toggle text-decoration-none link-hover"
                         data-bs-target="#report" data-bs-toggle="collapse" aria-expanded="false"><i
                             class="fa-solid fa-address-book"></i>
@@ -194,10 +209,14 @@
                             <a href="<?php echo base_url() . 'NightReport'?>"
                                 class="sidebar-link text-decoration-none link-hover">Night Report</a>
                         </li>
-                         <!-- <li class="sidebar-item">
-                            <a href="<?php //echo base_url() . 'parkingreport'?>"
+                         <li class="sidebar-item">
+                            <a href="<?php echo base_url() . 'parkingreport'?>"
                                 class="sidebar-link text-decoration-none link-hover">Parking Report</a>
-                        </li> -->
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="<?php echo base_url() . 'WorkingHours'?>"
+                                class="sidebar-link text-decoration-none link-hover">Working Hours</a>
+                        </li>
                     </ul>
                 </li>
 
